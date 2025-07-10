@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <p>
+        Тема статьи: {{ topic }}
+    </p>
+    <p>СТАТЬЯ:</p>
+    <p>
+        <a href="{% url 'blog:new_entry' topic.id %}">Создать статью</a>
+    </p>
+
+    <ul>
+        {% for entry in entries %}
+        <li>
+            <p>{{ entry.date_added|date:'M d, Y H:i' }}</p>
+            <p>{{ entry.text|linebreaks }}</p>
+        </li>
+        {% empty %}
+            <li>
+                Нет данных для отображения
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
