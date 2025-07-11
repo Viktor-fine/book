@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Topic
+from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 
 def index(request):
@@ -50,5 +50,21 @@ def new_entry(request, topic_id):
             return redirect('blog:topic', topic_id=topic_id)
     # Вывести пустую или не действительную форму
     context = {'topic': topic, 'form': form}
-    return render(request, 'blog/new_entry.html', context)
+    
 
+def edit_entry(request, entry_id):
+    #Редактирует существующую запись
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    if request.method !='POST':
+        #Исходный запрос. Форма заполняется данными текущей записи
+        form = EntryForm(instance=entry)
+    else:
+        # Отправка данных методом POST. Сделать обработку данных
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:topic', topic_id=topic.id)
+    context = {'entry':entry, 'topic':topic, 'form':form}
+    return render(request, 'blog/edit_entry.html', context)     
