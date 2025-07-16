@@ -17,6 +17,6 @@ def register(request):
             login(request, new_user)
             return redirect('blog:index')
     
-    # Вывод пустой илине действительной формы
+    # Вывод пустой или не действительной формы
     context = {'form': form}
     return render(request, 'registration/register.html', context)
