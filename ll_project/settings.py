@@ -124,5 +124,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Мои настройки 
+
 LOGIN_REDIRECT_URL = 'blog:index'
 LOGOUT_REDIRECT_URL = 'blog:index'
+LOGIN_URL = 'accounts:login'

@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'blog/index.html')
 
+@login_required # Этот код должен выполняться до кода def topics()
 def topics(request):
     """Выводит список всех тем из БД"""
     topics = Topic.objects.order_by('date_added')
     context = {'topics': topics}
     return render(request, 'blog/topics.html', context)
 
+@login_required
 def topic(request, topic_id):
     """Выводит одну тему и все её записи"""
     topic = Topic.objects.get(id=topic_id)
@@ -18,6 +21,7 @@ def topic(request, topic_id):
     context = {'topic': topic, 'entries': entries}
     return render (request, 'blog/topic.html', context)
 
+@login_required
 def new_topic(request):
     # Добавляет новую тему
     if request.method != 'POST':
@@ -33,6 +37,7 @@ def new_topic(request):
     context = {'form': form}
     return render(request, 'blog/new_topic.html', context)
 
+@login_required
 def new_entry(request, topic_id):
     # Добавляет новую запись по конкретной теме
     topic = Topic.objects.get(id=topic_id)
@@ -51,7 +56,7 @@ def new_entry(request, topic_id):
     # Вывести пустую или не действительную форму
     context = {'topic': topic, 'form': form}
     
-
+@login_required
 def edit_entry(request, entry_id):
     #Редактирует существующую запись
     entry = Entry.objects.get(id=entry_id)
