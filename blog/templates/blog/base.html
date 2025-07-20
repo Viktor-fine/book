@@ -3,29 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Мой блог</title>
+
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <body>
-    <p>
-        <a href="{% url 'blog:index' %}">Журнал статей</a> - 
-        <a href="{% url 'blog:topics' %}">Список тем</a> - 
-        {% if user.is_authenticated %}
-            Привет, {{ user.username }}.
-        {% else %}
-            <a href="{% url 'accounts:register' %}">Регистрация</a> - 
-            <a href="{% url 'accounts:login' %}">Войти</a>
-        {% endif %}
-    </p>
-    <a href="{% url 'blog:new_topic' %}">Добавить тему</a>
+    <nav class="navbar navbar-expand-md navbar-light bg-light md-4 border">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'blog:index' %}">Интересные статьи</a>
 
-        {% block content %}{% endblock content %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Навигация">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog:topics' %}">Темы</a>
+                    </li>
+                </ul> <!--Конец ссылок в левой части панели навигации-->
 
-        {% if user.is_authenticated %}
-        <hr />
-        <form action="{% url 'accounts:logout' %}" method="post">
-            {% csrf_token %}
-            <button name="submit">Выход из профиля</button> 
-        </form>
-        {% endif %}
+                <!-- Ссылки, связанные с аккаунтом -->
+                <ul class="navbar-nav ms-auto md-2 mb-md-0">
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="navbar-text me-2">Привет, {{ user.username }}.</span>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}">Регистрация</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
+                        </li>
+                    {% endif %}
+                </ul><!--Конец ссылок, связанных с аккаунтом-->
+
+                {% if user.is_authenticated %}
+                    <form action="{% url 'accounts:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button name="submit" class="btn btn-outline-secondray btn-sm">Выход</button>
+                    </form>
+                {% endif %}
+            </div><!--Закрывает сворачивающиеся части панели навигации-->
+        </div><!--Закрывает контейнер панели навигации-->
+    </nav><!--Конец панели навигации-->
+
+    {% block content %}{% endblock content %}
+
 </body>
 </html>
+
+
