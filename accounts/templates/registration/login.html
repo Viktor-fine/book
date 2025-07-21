@@ -1,16 +1,21 @@
 {% extends 'blog/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+<h2>Страница входа</h2>
+{% endblock page_header %}
 
 {% block content %}
 
-    {% if form.errors %}
+    <!-- {% if form.errors %}
         <p>Ваше имя и пароль не совпали. Пожалуйста попробуйте снова</p>
-    {% endif %}
+    {% endif %} -->
 
     <form actions="{% url 'accounts:login' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-
-        <button name="submit">Войти</button>
+        {% bootstrap_form form %}
+        {% bootstrap_button button_type="submit" content="Вход" %}
+        
     </form>
 
 {% endblock content %}

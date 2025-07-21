@@ -1,15 +1,18 @@
 {% extends 'blog/base.html' %}
 
+{% block page_header %}
+    <h1>Темы статей</h1>
+{% endblock page_header %}
+
 {% block content %}
 
-<p>Статьи</p>
-<ul>
+<ul class="list-group border-bottom pb-2 mb-4">
     {% for topic in topics %}
-        <li>
-            <a href="{% url 'blog:topic' topic.id %}">{{ topic }}</a>
+        <li class="list-group-item border-0">
+            <a href="{% url 'blog:topic' topic.id %}">{{ topic.text }}</a>
         </li>
     {% empty %}
-        <p>На данный момент нет статей</p>
+        <li class="list-group-item border-0">На данный момент нет статей</li>
     {%endfor%}
 </ul>
 
